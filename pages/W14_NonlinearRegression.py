@@ -13,6 +13,7 @@ st.caption("📘 教科書第 10 章｜非線性擬合與工程預測")
 np.random.seed(42)
 X = np.linspace(50, 200, 25).reshape(-1, 1)
 Y = 0.01*X**2 - 0.5*X + 10 + np.random.normal(0, 2, 25)
+Y = Y.flatten()  # 確保 Y 是一維陣列
 
 degree = st.slider("多項式階數", 1, 5, 2)
 
@@ -23,21 +24,20 @@ model = LinearRegression()
 model.fit(X_poly, Y)
 
 Y_pred = model.predict(X_poly)
+Y_pred = Y_pred.flatten()  # 確保預測值是一維陣列
 
-# 確保一維
-Y = np.ravel(Y)
-Y_pred = np.ravel(Y_pred)
-X_flat = X.ravel()
+X_flat = X.flatten()  # 確保 X 是一維陣列
 
 residuals = Y - Y_pred
 
-# 顯示係數 - 修正版本
-# model.coef_ 包含所有特徵的係數，第一個對應 PolynomialFeatures 的常數項
-# 我們需要 intercept + 實際多項式係數
-all_coef = np.concatenate([np.atleast_1d(model.intercept_), np.atleast_1d(model.coef_).flatten()])
-# PolynomialFeatures 會產生 [1, x, x^2, ...] 所以 coef_ 有 degree+1 個元素
-# 但第一個是常數項的係數(應該接近0因為我們已有intercept)，所以顯示時跳過
-coefficients = np.concatenate([np.atleast_1d(model.intercept_), np.atleast_1d(model.coef_).flatten()[1:]])
+# 顯示係數
+# PolynomialFeatures 產生 [1, x, x^2, ..., x^degree]
+# LinearRegression 的 intercept_ 對應截距，coef_ 對應所有特徵(包括常數項1)
+# 所以 coef_[0] 對應常數項1的係數(通常接近0)，coef_[1:] 對應 x, x^2, ..., x^degree
+coefficients = np.concatenate([
+    np.atleast_1d(model.intercept_), 
+    np.atleast_1d(model.coef_).flatten()[1:]
+])
 st.write(f"迴歸係數 b0~b{degree}:", np.round(coefficients, 3))
 st.write(f"R² = {r2_score(Y, Y_pred):.3f}")
 
