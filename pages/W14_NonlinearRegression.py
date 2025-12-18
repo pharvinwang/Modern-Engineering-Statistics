@@ -32,7 +32,7 @@ X_flat = X.ravel()
 residuals = Y - Y_pred
 
 # 顯示係數 - 修正版本
-coefficients = np.concatenate([[model.intercept_], model.coef_[1:]])
+coefficients = np.concatenate([np.array([model.intercept_]), model.coef_[1:]])
 st.write(f"迴歸係數 b0~b{degree}:", np.round(coefficients, 3))
 st.write(f"R² = {r2_score(Y, Y_pred):.3f}")
 
