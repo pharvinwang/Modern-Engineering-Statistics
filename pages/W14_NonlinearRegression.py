@@ -12,8 +12,8 @@ st.caption("📘 教科書第 10 章｜非線性擬合與工程預測")
 
 np.random.seed(42)
 X = np.linspace(50, 200, 25).reshape(-1, 1)
-Y = 0.01*X**2 - 0.5*X + 10 + np.random.normal(0, 2, 25)
-Y = Y.flatten()  # 確保 Y 是一維陣列
+noise = np.random.normal(0, 2, 25)
+Y = (0.01*X**2 - 0.5*X + 10).flatten() + noise
 
 degree = st.slider("多項式階數", 1, 5, 2)
 
