@@ -24,13 +24,13 @@ model = LinearRegression()
 model.fit(X_poly, Y)
 
 Y_pred = model.predict(X_poly)
-Y_pred = Y_pred.flatten()  # 確保預測值是一維陣列
+Y_pred = Y_pred.flatten()
 
-X_flat = X.flatten()  # 確保 X 是一維陣列
+X_flat = X.flatten()
 
 residuals = Y - Y_pred
 
-# 顯示係數和R² - 更緊湊的單行顯示
+# 顯示係數和R²
 coefficients = np.concatenate([
     np.atleast_1d(model.intercept_), 
     np.atleast_1d(model.coef_).flatten()[1:]
@@ -44,7 +44,6 @@ st.write(f"**R² = {r2_score(Y, Y_pred):.3f}**")
 col1, col2 = st.columns(2)
 
 with col1:
-    # 散佈圖與擬合曲線 - 縮小尺寸
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.scatter(X_flat, Y, color='blue', label='實測值', s=25)
     ax.plot(X_flat, Y_pred, color='red', label=f'{degree}次多項式擬合', linewidth=2)
@@ -57,7 +56,6 @@ with col1:
     st.pyplot(fig)
 
 with col2:
-    # 殘差圖 - 縮小尺寸
     fig2, ax2 = plt.subplots(figsize=(6, 4))
     ax2.scatter(range(len(residuals)), residuals, s=25)
     ax2.axhline(0, color='red', linestyle='--', linewidth=1.5)
@@ -67,4 +65,4 @@ with col2:
     ax2.grid(True, alpha=0.3)
     ax2.tick_params(labelsize=8)
     plt.tight_layout()
-    st.pyplot(fig2)S
+    st.pyplot(fig2)
