@@ -32,8 +32,12 @@ X_flat = X.ravel()
 residuals = Y - Y_pred
 
 # 顯示係數 - 修正版本
-intercept = np.atleast_1d(model.intercept_)
-coefficients = np.concatenate([intercept, model.coef_[1:]])
+# model.coef_ 包含所有特徵的係數，第一個對應 PolynomialFeatures 的常數項
+# 我們需要 intercept + 實際多項式係數
+all_coef = np.concatenate([np.atleast_1d(model.intercept_), np.atleast_1d(model.coef_).flatten()])
+# PolynomialFeatures 會產生 [1, x, x^2, ...] 所以 coef_ 有 degree+1 個元素
+# 但第一個是常數項的係數(應該接近0因為我們已有intercept)，所以顯示時跳過
+coefficients = np.concatenate([np.atleast_1d(model.intercept_), np.atleast_1d(model.coef_).flatten()[1:]])
 st.write(f"迴歸係數 b0~b{degree}:", np.round(coefficients, 3))
 st.write(f"R² = {r2_score(Y, Y_pred):.3f}")
 
