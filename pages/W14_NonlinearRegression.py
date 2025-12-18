@@ -5,10 +5,15 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
+import matplotlib.font_manager as fm
 
-# 設定中文字型
-plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'Arial Unicode MS', 'DejaVu Sans']
-plt.rcParams['axes.unicode_minus'] = False  # 正確顯示負號
+# 設定中文字型 - 使用系統可用字型
+try:
+    plt.rcParams['font.family'] = ['sans-serif']
+    plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'Microsoft JhengHei', 'SimHei', 'DejaVu Sans']
+    plt.rcParams['axes.unicode_minus'] = False
+except:
+    pass
 
 st.set_page_config(layout="wide")
 st.title("第 14 週｜非線性迴歸與多項式回歸")
@@ -49,26 +54,26 @@ col1, col2 = st.columns(2)
 
 with col1:
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.scatter(X_flat, Y, color='blue', label='實測值', s=25)
-    ax.plot(X_flat, Y_pred, color='red', label=f'{degree}次多項式擬合', linewidth=2)
-    ax.set_xlabel("X", fontsize=9)
-    ax.set_ylabel("Y", fontsize=9)
-    ax.legend(fontsize=8)
+    ax.scatter(X_flat, Y, color='blue', label='data points', s=25)
+    ax.plot(X_flat, Y_pred, color='red', label=f'polynomial fit (degree {degree})', linewidth=2)
+    ax.set_xlabel("X", fontsize=10)
+    ax.set_ylabel("Y", fontsize=10)
+    ax.legend(fontsize=8, loc='upper left')
     ax.grid(True, alpha=0.3)
-    ax.tick_params(labelsize=8)
+    ax.tick_params(labelsize=9)
     plt.tight_layout()
     st.pyplot(fig)
-    st.caption("📊 散佈圖與多項式擬合曲線")
+    st.markdown("<div style='text-align: center'>📊 散佈圖與多項式擬合曲線</div>", unsafe_allow_html=True)
 
 with col2:
     fig2, ax2 = plt.subplots(figsize=(6, 4))
     ax2.scatter(range(len(residuals)), residuals, s=25, color='steelblue')
     ax2.axhline(0, color='red', linestyle='--', linewidth=1.5)
-    ax2.set_xlabel("樣本編號", fontsize=9)
-    ax2.set_ylabel("殘差", fontsize=9)
-    ax2.set_title("殘差圖", fontsize=10)
+    ax2.set_xlabel("Sample Index", fontsize=10)
+    ax2.set_ylabel("Residuals", fontsize=10)
+    ax2.set_title("Residual Plot", fontsize=11)
     ax2.grid(True, alpha=0.3)
-    ax2.tick_params(labelsize=8)
+    ax2.tick_params(labelsize=9)
     plt.tight_layout()
     st.pyplot(fig2)
-    st.caption("📉 殘差分布圖（用於檢驗模型適配性）")
+    st.markdown("<div style='text-align: center'>📉 殘差分布圖（用於檢驗模型適配性）</div>", unsafe_allow_html=True)
