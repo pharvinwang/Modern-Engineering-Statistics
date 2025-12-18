@@ -1,7 +1,7 @@
 # Modern-Engineering-Statistics
 Modern-Engineering-Statistics/
 │
-├─ app.py                  ← 你現在要的
+├─ app.py                  
 ├─ pages/
 │   ├─ W1_engineering_uncertainty.py
 │   ├─ W2_descriptive_engineering.py
