@@ -1,4 +1,3 @@
-# W14_NonlinearRegression.py
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +5,6 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-st.set_page_config(layout="wide")
 st.title("第 14 週｜非線性迴歸與多項式回歸")
 st.caption("📘 教科書第 10 章｜非線性擬合與工程預測")
 
@@ -22,9 +20,10 @@ model = LinearRegression()
 model.fit(X_poly,Y)
 Y_pred = model.predict(X_poly)
 
-# 確保一維
-Y = np.ravel(Y)
-Y_pred = np.ravel(Y_pred)
+# 強制一維
+X = X.ravel()
+Y = Y.ravel()
+Y_pred = Y_pred.ravel()
 residuals = Y - Y_pred
 
 st.write(f"迴歸係數 b0~b{degree}:", np.round(np.append(model.intercept_, model.coef_),3))
@@ -32,8 +31,8 @@ st.write(f"R² = {r2_score(Y,Y_pred):.3f}")
 
 # 散佈圖與擬合曲線
 fig, ax = plt.subplots()
-ax.scatter(X.ravel(), Y, color='blue', label='實測值')        # 修正
-ax.plot(X.ravel(), Y_pred, color='red', label=f'{degree}次多項式擬合')  # 修正
+ax.scatter(X, Y, color='blue', label='實測值')
+ax.plot(X, Y_pred, color='red', label=f'{degree}次多項式擬合')
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
 ax.legend()
