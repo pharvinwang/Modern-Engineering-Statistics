@@ -6,6 +6,10 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
+# 設定中文字型
+plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'Arial Unicode MS', 'DejaVu Sans']
+plt.rcParams['axes.unicode_minus'] = False  # 正確顯示負號
+
 st.set_page_config(layout="wide")
 st.title("第 14 週｜非線性迴歸與多項式回歸")
 st.caption("📘 教科書第 10 章｜非線性擬合與工程預測")
@@ -54,10 +58,11 @@ with col1:
     ax.tick_params(labelsize=8)
     plt.tight_layout()
     st.pyplot(fig)
+    st.caption("📊 散佈圖與多項式擬合曲線")
 
 with col2:
     fig2, ax2 = plt.subplots(figsize=(6, 4))
-    ax2.scatter(range(len(residuals)), residuals, s=25)
+    ax2.scatter(range(len(residuals)), residuals, s=25, color='steelblue')
     ax2.axhline(0, color='red', linestyle='--', linewidth=1.5)
     ax2.set_xlabel("樣本編號", fontsize=9)
     ax2.set_ylabel("殘差", fontsize=9)
@@ -66,3 +71,4 @@ with col2:
     ax2.tick_params(labelsize=8)
     plt.tight_layout()
     st.pyplot(fig2)
+    st.caption("📉 殘差分布圖（用於檢驗模型適配性）")
